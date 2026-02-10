@@ -1,7 +1,7 @@
 {
   "name": "@wgtechlabs/config-engine",
   "version": "0.1.0",
-  "description": "Fast, Bun-first configuration engine with SQLite-backed storage, in-memory caching, Zod validation, and optional encryption via @wgtechlabs/secrets-engine.",
+  "description": "Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications — backed by SQLite with in-memory caching, Zod validation, and optional encryption.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -40,7 +40,11 @@
     "bun",
     "fast",
     "typed",
-    "zod"
+    "zod",
+    "ai",
+    "agent",
+    "cli",
+    "sdk"
   ],
   "author": "Waren Gonzaga <sirgonzaga@wgtechlabs.com>",
   "license": "MIT",

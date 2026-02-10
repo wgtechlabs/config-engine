@@ -1,6 +1,12 @@
 # config-engine
 
-> Fast, Bun-first configuration engine with SQLite-backed storage, in-memory caching, Zod validation, and optional encryption.
+> Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications — backed by SQLite with in-memory caching, Zod validation, and optional encryption.
+
+## Use Cases
+
+- **AI agent frameworks** — persistent agent settings, model preferences, API key management, and runtime configuration
+- **CLI applications** — user preferences, saved credentials, and tool configuration that persists across sessions
+- **Desktop & server apps** — application settings with schema validation, safe migrations, and multi-process access
 
 ## Features
 
