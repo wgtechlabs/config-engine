@@ -1,7 +1,7 @@
 {
   "name": "@wgtechlabs/config-engine",
   "version": "0.1.0",
-  "description": "Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications — backed by SQLite with in-memory caching, Zod validation, and optional encryption.",
+  "description": "Configs should be easy. Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

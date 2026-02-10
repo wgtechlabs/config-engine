@@ -1,6 +1,11 @@
-# config-engine
+# @wgtechlabs/config-engine
 
-> Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications — backed by SQLite with in-memory caching, Zod validation, and optional encryption.
+![GitHub Repo Banner](https://ghrb.waren.build/banner?header=config-engine+%F0%9F%8E%9B%EF%B8%8F%F0%9F%9A%82&subheader=configs+should+be+easy&bg=016EEA&color=FFFFFF&headerfont=Google+Sans+Code&subheaderfont=Inter&watermarkpos=bottom-right)
+<!-- Created with GitHub Repo Banner by Waren Gonzaga: https://ghrb.waren.build -->
+
+> Configs should be easy.
+
+Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications — backed by SQLite with in-memory caching, Zod validation, and optional encryption.
 
 ## Use Cases
 
