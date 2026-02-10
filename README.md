@@ -2,21 +2,16 @@
 
 > Fast, Bun-first configuration engine with SQLite-backed storage, in-memory caching, Zod validation, and optional encryption.
 
-## Why?
+## Features
 
-[`conf`](https://github.com/sindresorhus/conf) reads from disk on **every** `.get()` call, uses JSON flat files (no ACID guarantees), and has no multi-process support. `config-engine` fixes all of that:
-
-| Feature | `conf` | `config-engine` |
-|---|---|---|
-| Storage | JSON flat file | SQLite (ACID, WAL mode) |
-| Read performance | Disk I/O every `.get()` | In-memory Map (zero I/O) |
-| Write safety | `atomically` (rename hack) | SQLite transactions |
-| Multi-process | Explicitly unsupported | Safe via SQLite WAL locking |
-| Validation | AJV (~150KB, every read+write) | Zod built-in + pluggable, write-only |
-| Encryption | Built-in AES (key in source) | `@wgtechlabs/secrets-engine` (machine-bound) |
-| Migrations | Sync-only, fragile, no rollback | Async, SQLite transaction rollback |
-| Runtime | Node.js only | Bun-first + Node.js |
-| I/O model | Sync only | Async-first, configurable flush |
+- **SQLite-backed** — ACID transactions, WAL mode, multi-process safe
+- **In-memory cache** — zero disk I/O on reads, configurable write-behind flush
+- **Zod validation** — built-in schema validation with pluggable validator interface
+- **Dot-notation access** — `config.get("ui.sidebar.width")` just works
+- **Async migrations** — version-based with full transaction rollback on failure
+- **Optional encryption** — AES-256-GCM via [`@wgtechlabs/secrets-engine`](https://github.com/wgtechlabs/secrets-engine) or bring your own
+- **Change events** — watch specific keys or the entire store
+- **Bun-first, Node.js compatible** — uses `bun:sqlite` natively, `better-sqlite3` on Node.js
 
 ## Install
 
