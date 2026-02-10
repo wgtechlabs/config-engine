@@ -1,0 +1,78 @@
+{
+  "name": "@wgtechlabs/config-engine",
+  "version": "0.1.0",
+  "description": "Fast, Bun-first configuration engine with SQLite-backed storage, in-memory caching, Zod validation, and optional encryption via @wgtechlabs/secrets-engine.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./validators/zod": {
+      "types": "./dist/validation.d.ts",
+      "import": "./dist/validation.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "test": "bun test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run build"
+  },
+  "keywords": [
+    "config",
+    "configuration",
+    "store",
+    "storage",
+    "settings",
+    "preferences",
+    "sqlite",
+    "bun",
+    "fast",
+    "typed",
+    "zod"
+  ],
+  "author": "Waren Gonzaga <sirgonzaga@wgtechlabs.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wgtechlabs/config-engine.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wgtechlabs/config-engine/issues"
+  },
+  "homepage": "https://github.com/wgtechlabs/config-engine#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.2.4",
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "better-sqlite3": ">=11.0.0",
+    "@wgtechlabs/secrets-engine": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "better-sqlite3": {
+      "optional": true
+    },
+    "@wgtechlabs/secrets-engine": {
+      "optional": true
+    }
+  }
+}
