@@ -119,5 +119,6 @@ function openNodeDatabase(filepath: string): DatabaseAdapter {
 }
 
 function getBunSqliteSpecifier(): string {
+	// Spells "bun:sqlite" without exposing a static bun:* import to bundlers.
 	return String.fromCharCode(98, 117, 110, 58, 115, 113, 108, 105, 116, 101);
 }

@@ -35,10 +35,7 @@ describe("runtime bundling", () => {
 
 			const outputPath = join(outDir, "entry.js");
 			const bundled = readFileSync(outputPath, "utf8");
-			expect(bundled).not.toContain('from "bun:sqlite"');
-			expect(bundled).not.toContain("from 'bun:sqlite'");
-			expect(bundled).not.toContain('import "bun:sqlite"');
-			expect(bundled).not.toContain("import 'bun:sqlite'");
+			expect(bundled).not.toMatch(/(?:from|import)\s+["']bun:sqlite["']/);
 
 			const run = Bun.spawnSync(["node", outputPath], {
 				stdout: "pipe",
