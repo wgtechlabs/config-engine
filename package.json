@@ -17,14 +17,14 @@
 	},
 	"files": ["dist", "LICENSE", "README.md"],
 	"scripts": {
-		"build": "bun run scripts/build.ts",
+		"build": "node scripts/build.mjs",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"lint": "biome check .",
 		"lint:fix": "biome check --write .",
 		"format": "biome format --write .",
 		"typecheck": "tsc --noEmit",
-		"prepublishOnly": "bun run build"
+		"prepublishOnly": "node scripts/build.mjs"
 	},
 	"keywords": [
 		"config",
