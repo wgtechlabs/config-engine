@@ -42,8 +42,11 @@ describe("runtime bundling", () => {
 			const bundled = readFileSync(outputPath, "utf8");
 			// No bun-specific imports should appear in a node-targeted bundle
 			expect(bundled).not.toMatch(/(?:from|import|require\s*\()\s*["']bun:sqlite["']/);
-			// better-sqlite3 must remain external (not inlined)
-			expect(bundled).toMatch(/better-sqlite3/);
+			// better-sqlite3 must remain external (not inlined): the bundle has to keep a
+			// real import/require of the specifier, not just an incidental string mention.
+			expect(bundled).toMatch(
+				/(?:from|import)\s*["']better-sqlite3["']|[\w$]*[Rr]equire\s*\(\s*["']better-sqlite3["']\s*\)/,
+			);
 
 			const run = Bun.spawnSync(["node", outputPath], {
 				stdout: "pipe",
