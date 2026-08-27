@@ -2,14 +2,15 @@
  * Tests for the runtime SQLite adapter.
  */
 
-import { describe, expect, test } from "bun:test";
+import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { describe, expect, test } from "vitest";
 
 describe("runtime bundling", () => {
-	test("node-targeted bundle externalises better-sqlite3 and has no bun-specific imports", async () => {
+	test("node-targeted bundle externalises better-sqlite3 and has no bun-specific imports", () => {
 		const workDir = mkdtempSync(join(tmpdir(), "config-engine-runtime-"));
 		const entryPath = join(workDir, "entry.ts");
 		const outDir = join(workDir, "dist");
@@ -27,16 +28,25 @@ describe("runtime bundling", () => {
 				`import { openDatabase } from ${JSON.stringify(runtimePath)};\nconsole.log(typeof openDatabase);\n`,
 			);
 
-			const result = await Bun.build({
-				entrypoints: [entryPath],
-				outdir: outDir,
-				target: "node",
-				format: "esm",
-				splitting: false,
-				external: ["better-sqlite3"],
-			});
-
-			expect(result.success).toBe(true);
+			// Use bun as the build toolchain (subprocess) so we don't depend on Bun runtime APIs
+			execFileSync(
+				"bun",
+				[
+					"build",
+					entryPath,
+					"--outdir",
+					outDir,
+					"--target",
+					"node",
+					"--format",
+					"esm",
+					"--external",
+					"better-sqlite3",
+				],
+				{
+					stdio: "pipe",
+				},
+			);
 
 			const outputPath = join(outDir, "entry.js");
 			const bundled = readFileSync(outputPath, "utf8");
@@ -48,13 +58,9 @@ describe("runtime bundling", () => {
 				/(?:from|import)\s*["']better-sqlite3["']|[\w$]*[Rr]equire\s*\(\s*["']better-sqlite3["']\s*\)/,
 			);
 
-			const run = Bun.spawnSync(["node", outputPath], {
-				stdout: "pipe",
-				stderr: "pipe",
-			});
-
-			expect(run.exitCode).toBe(0);
-			expect(new TextDecoder().decode(run.stdout).trim()).toBe("function");
+			// Verify the bundle runs cleanly under node (no bun runtime needed)
+			const output = execFileSync("node", [outputPath], { encoding: "utf8" });
+			expect(output.trim()).toBe("function");
 		} finally {
 			rmSync(workDir, { recursive: true, force: true });
 		}

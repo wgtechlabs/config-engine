@@ -2,10 +2,10 @@
  * Tests for the in-memory cache layer.
  */
 
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { ConfigCache } from "../src/cache.js";
 import { openDatabase } from "../src/runtime.js";
 import { ConfigStore } from "../src/store.js";

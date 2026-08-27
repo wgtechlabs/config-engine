@@ -2,7 +2,7 @@
  * Tests for the validation module.
  */
 
-import { describe, expect, test } from "bun:test";
+import { describe, expect, test } from "vitest";
 import { z } from "zod";
 import type { Validator } from "../src/types.js";
 import { createZodValidator, resolveValidator } from "../src/validation.js";

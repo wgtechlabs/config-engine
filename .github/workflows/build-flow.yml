@@ -31,7 +31,7 @@ jobs:
       ci-install-command: bun install --frozen-lockfile
       ci-lint-command: bunx biome check . --reporter=github
       ci-typecheck-command: bun run typecheck
-      ci-test-command: bun test
+      ci-test-command: bunx vitest run
       ci-build-command: bun run build
       ci-matrix-versions: '["22","24","26"]'
       codeql-build-mode: none

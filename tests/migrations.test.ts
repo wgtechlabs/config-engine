@@ -2,10 +2,10 @@
  * Tests for the migration system.
  */
 
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { getSchemaVersion, runMigrations } from "../src/migrations.js";
 import { openDatabase } from "../src/runtime.js";
 import { ConfigStore } from "../src/store.js";

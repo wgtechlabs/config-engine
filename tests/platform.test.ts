@@ -2,9 +2,9 @@
  * Tests for the platform module.
  */
 
-import { describe, expect, test } from "bun:test";
 import { homedir, platform } from "node:os";
 import { join } from "node:path";
+import { describe, expect, test } from "vitest";
 import { resolveConfigDir, resolveConfigPath } from "../src/platform.js";
 
 describe("resolveConfigDir", () => {
@@ -33,7 +33,7 @@ describe("resolveConfigDir", () => {
 describe("resolveConfigPath", () => {
 	test("returns .db file with default config name", () => {
 		const path = resolveConfigPath({ projectName: "my-app" });
-		expect(path).toEndWith("config.db");
+		expect(path).toMatch(/config\.db$/);
 		expect(path).toContain("my-app");
 	});
 
@@ -42,7 +42,7 @@ describe("resolveConfigPath", () => {
 			projectName: "my-app",
 			configName: "settings",
 		});
-		expect(path).toEndWith("settings.db");
+		expect(path).toMatch(/settings\.db$/);
 	});
 
 	test("respects cwd override", () => {
