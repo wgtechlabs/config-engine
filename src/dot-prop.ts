@@ -87,10 +87,7 @@ export function hasByPath(obj: unknown, path: string): boolean {
  * Returns a new object (shallow copies along the path).
  * Returns the original object if the path doesn't exist.
  */
-export function deleteByPath<T extends Record<string, unknown>>(
-	obj: T,
-	path: string,
-): T {
+export function deleteByPath<T extends Record<string, unknown>>(obj: T, path: string): T {
 	const keys = path.split(".");
 	if (keys.length === 0) return obj;
 

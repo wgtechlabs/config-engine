@@ -2,10 +2,10 @@
  * Tests for the SQLite store layer.
  */
 
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "node:fs";
-import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { openDatabase } from "../src/runtime.js";
 import { ConfigStore } from "../src/store.js";
 
@@ -13,7 +13,10 @@ let store: ConfigStore;
 let dbPath: string;
 
 beforeEach(() => {
-	const dir = join(tmpdir(), `config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+	const dir = join(
+		tmpdir(),
+		`config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+	);
 	mkdirSync(dir, { recursive: true });
 	dbPath = join(dir, "test.db");
 	const db = openDatabase(dbPath);

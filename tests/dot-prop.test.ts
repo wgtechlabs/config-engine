@@ -2,7 +2,7 @@
  * Tests for the dot-prop utility module.
  */
 
-import { describe, expect, test } from "bun:test";
+import { describe, expect, test } from "vitest";
 import { deleteByPath, getByPath, hasByPath, setByPath } from "../src/dot-prop.js";
 
 describe("getByPath", () => {

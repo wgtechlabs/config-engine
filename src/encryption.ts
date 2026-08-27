@@ -33,7 +33,7 @@ export class SecretsEngineEncryptor implements Encryptor {
 		} catch {
 			throw new Error(
 				'Encryption requires "@wgtechlabs/secrets-engine" as a peer dependency. ' +
-					"Install it with: bun add @wgtechlabs/secrets-engine",
+					"Install it with: npm install @wgtechlabs/secrets-engine",
 			);
 		}
 

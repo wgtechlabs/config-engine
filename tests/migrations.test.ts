@@ -2,26 +2,37 @@
  * Tests for the migration system.
  */
 
-import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "node:fs";
-import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, test } from "vitest";
+import { getSchemaVersion, runMigrations } from "../src/migrations.js";
 import { openDatabase } from "../src/runtime.js";
 import { ConfigStore } from "../src/store.js";
-import { getSchemaVersion, runMigrations } from "../src/migrations.js";
 
 let store: ConfigStore;
 let tmpDir: string;
 
 beforeEach(() => {
-	tmpDir = join(tmpdir(), `config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+	tmpDir = join(
+		tmpdir(),
+		`config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+	);
 	mkdirSync(tmpDir, { recursive: true });
 	store = new ConfigStore(openDatabase(join(tmpDir, "test.db")));
 });
 
 afterEach(() => {
-	try { store.close(); } catch { /* ignore */ }
-	try { rmSync(tmpDir, { recursive: true, force: true }); } catch { /* ignore */ }
+	try {
+		store.close();
+	} catch {
+		/* ignore */
+	}
+	try {
+		rmSync(tmpDir, { recursive: true, force: true });
+	} catch {
+		/* ignore */
+	}
 });
 
 describe("migrations", () => {
@@ -186,8 +197,18 @@ describe("migrations", () => {
 			store,
 			projectVersion: "2.0.0",
 			migrations: [
-				{ version: "1.0.0", up(ctx) { ctx.set("value", "changed"); } },
-				{ version: "2.0.0", up(ctx) { ctx.set("value", "changed"); } },
+				{
+					version: "1.0.0",
+					up(ctx) {
+						ctx.set("value", "changed");
+					},
+				},
+				{
+					version: "2.0.0",
+					up(ctx) {
+						ctx.set("value", "changed");
+					},
+				},
 			],
 		});
 

@@ -1,6 +1,7 @@
 /**
  * @module config-engine
- * Fast, Bun-first configuration engine with SQLite-backed storage.
+ * Node.js configuration engine with SQLite-backed storage.
+ * Bun is used as the build and test toolchain; Node.js is the target runtime.
  *
  * @example
  * ```ts
@@ -25,8 +26,8 @@
  */
 
 import { mkdirSync } from "node:fs";
+import { type FSWatcher, watch } from "node:fs";
 import { dirname } from "node:path";
-import { watch, type FSWatcher } from "node:fs";
 
 import { ConfigCache } from "./cache.js";
 import { deleteByPath, getByPath, hasByPath, setByPath } from "./dot-prop.js";
@@ -233,9 +234,7 @@ export class ConfigEngine<T extends Record<string, unknown>> {
 		}
 
 		// Persist merged data if defaults added new keys
-		const hasNewDefaults = Object.keys(defaults).some(
-			(key) => !(key in storedData),
-		);
+		const hasNewDefaults = Object.keys(defaults).some((key) => !(key in storedData));
 		if (hasNewDefaults) {
 			if (encryptor) {
 				const encrypted = await encryptStore(merged, encryptor);
@@ -250,9 +249,7 @@ export class ConfigEngine<T extends Record<string, unknown>> {
 		if (migrations && migrations.length > 0) {
 			if (!projectVersion) {
 				store.close();
-				throw new ConfigEngineError(
-					'"projectVersion" is required when "migrations" is provided.',
-				);
+				throw new ConfigEngineError('"projectVersion" is required when "migrations" is provided.');
 			}
 			await runMigrations({
 				store,
@@ -480,10 +477,7 @@ export class ConfigEngine<T extends Record<string, unknown>> {
 	 * Watch a specific key for changes.
 	 * @returns An unsubscribe function.
 	 */
-	onDidChange<K extends string & keyof T>(
-		key: K,
-		callback: ChangeCallback<T[K]>,
-	): Unsubscribe {
+	onDidChange<K extends string & keyof T>(key: K, callback: ChangeCallback<T[K]>): Unsubscribe {
 		if (!this.#listeners.has(key)) {
 			this.#listeners.set(key, new Set());
 		}

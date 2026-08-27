@@ -10,8 +10,8 @@ import type { ZodSchema } from "zod";
 // ---------------------------------------------------------------------------
 
 /**
- * Minimal interface that both `bun:sqlite` and `better-sqlite3` satisfy.
- * We program against this so the rest of the codebase is runtime-agnostic.
+ * Minimal interface that `better-sqlite3` satisfies.
+ * We program against this so the rest of the codebase stays decoupled from the driver.
  */
 export interface DatabaseAdapter {
 	prepare(sql: string): StatementAdapter;

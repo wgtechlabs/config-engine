@@ -1,0 +1,40 @@
+name: Build Flow
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: build-flow-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-flow:
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+      security-events: write
+      actions: read
+    uses: wgtechlabs/build-flow-action/.github/workflows/app.yml@v0.2.0
+    secrets: inherit
+    with:
+      ci-profile: node-bun
+      ci-install-command: bun install --frozen-lockfile
+      ci-lint-command: bunx biome check . --reporter=github
+      ci-typecheck-command: bun run typecheck
+      ci-test-command: bunx vitest run
+      ci-build-command: bun run build
+      ci-matrix-versions: '["22","24","26"]'
+      codeql-build-mode: none
+      enable-package: true
+      package-registry: both
+      package-manager: npm
