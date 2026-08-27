@@ -37,4 +37,4 @@ jobs:
       codeql-build-mode: none
       enable-package: true
       package-registry: both
-      package-manager: bun
+      package-manager: npm
