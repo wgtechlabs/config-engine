@@ -28,7 +28,7 @@ jobs:
     secrets: inherit
     with:
       ci-profile: node-bun
-      ci-install-command: bun install --frozen-lockfile --trust=better-sqlite3
+      ci-install-command: bun install --frozen-lockfile
       ci-lint-command: bunx biome check . --reporter=github
       ci-typecheck-command: bun run typecheck
       ci-test-command: bun test

@@ -72,5 +72,6 @@
 		"@wgtechlabs/secrets-engine": {
 			"optional": true
 		}
-	}
+	},
+	"trustedDependencies": ["better-sqlite3"]
 }
