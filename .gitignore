@@ -26,7 +26,7 @@ desktop.ini
 coverage/
 
 # Bun
-bun.lock
+# bun.lock is committed to enable frozen lockfile installs in CI
 
 # Debug
 *.log
