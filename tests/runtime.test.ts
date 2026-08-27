@@ -6,20 +6,22 @@ import { describe, expect, test } from "bun:test";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 
 describe("runtime bundling", () => {
 	test("does not emit a static bun:sqlite import in Node bundles", async () => {
 		const workDir = mkdtempSync(join(tmpdir(), "config-engine-runtime-"));
 		const entryPath = join(workDir, "entry.ts");
 		const outDir = join(workDir, "dist");
-		const runtimePath = fileURLToPath(new URL("../src/runtime.ts", import.meta.url));
+		// Use a file:// URL so the import path is portable across platforms (including Windows).
+		const runtimeUrl = new URL("../src/runtime.ts", import.meta.url).href;
 
 		try {
 			mkdirSync(outDir, { recursive: true });
+			// Import openDatabase (not just isBun) so the bundler cannot tree-shake
+			// the SQLite adapter code — this ensures the bun:sqlite guard is actually tested.
 			writeFileSync(
 				entryPath,
-				`import { isBun } from ${JSON.stringify(runtimePath)};\nconsole.log(isBun());\n`,
+				`import { isBun, openDatabase } from ${JSON.stringify(runtimeUrl)};\nconsole.log(isBun());\n`,
 			);
 
 			const result = await Bun.build({
