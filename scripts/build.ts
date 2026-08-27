@@ -16,20 +16,13 @@ console.log("Building config-engine...");
 
 // Transpile TypeScript → JavaScript using Bun
 const result = await Bun.build({
-	entrypoints: [
-		resolve(rootDir, "src/index.ts"),
-		resolve(rootDir, "src/validation.ts"),
-	],
+	entrypoints: [resolve(rootDir, "src/index.ts"), resolve(rootDir, "src/validation.ts")],
 	outdir: outDir,
 	target: "node",
 	format: "esm",
 	splitting: true,
 	sourcemap: "external",
-	external: [
-		"better-sqlite3",
-		"@wgtechlabs/secrets-engine",
-		"zod",
-	],
+	external: ["better-sqlite3", "@wgtechlabs/secrets-engine", "zod"],
 });
 
 if (!result.success) {

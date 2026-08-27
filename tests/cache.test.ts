@@ -4,26 +4,37 @@
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "node:fs";
-import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { ConfigCache } from "../src/cache.js";
 import { openDatabase } from "../src/runtime.js";
 import { ConfigStore } from "../src/store.js";
-import { ConfigCache } from "../src/cache.js";
 
 let store: ConfigStore;
 let dbPath: string;
 let tmpDir: string;
 
 beforeEach(() => {
-	tmpDir = join(tmpdir(), `config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+	tmpDir = join(
+		tmpdir(),
+		`config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+	);
 	mkdirSync(tmpDir, { recursive: true });
 	dbPath = join(tmpDir, "test.db");
 	store = new ConfigStore(openDatabase(dbPath));
 });
 
 afterEach(() => {
-	try { store.close(); } catch { /* ignore */ }
-	try { rmSync(tmpDir, { recursive: true, force: true }); } catch { /* ignore */ }
+	try {
+		store.close();
+	} catch {
+		/* ignore */
+	}
+	try {
+		rmSync(tmpDir, { recursive: true, force: true });
+	} catch {
+		/* ignore */
+	}
 });
 
 describe("ConfigCache", () => {

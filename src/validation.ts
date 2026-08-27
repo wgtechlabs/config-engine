@@ -3,7 +3,7 @@
  * Pluggable validation system with built-in Zod adapter.
  */
 
-import { type ZodSchema, type ZodError } from "zod";
+import type { ZodError, ZodSchema } from "zod";
 import type { ValidationResult, Validator } from "./types.js";
 
 /**

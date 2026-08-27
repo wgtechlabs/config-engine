@@ -74,9 +74,7 @@ export class ConfigStore {
 	 * Significantly faster than individual `setOne` calls.
 	 */
 	setMany(entries: Array<[string, unknown]>): void {
-		const stmt = this.#db.prepare(
-			"INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)",
-		);
+		const stmt = this.#db.prepare("INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)");
 		const runTransaction = this.#db.transaction(() => {
 			for (const [key, value] of entries) {
 				stmt.run(key, JSON.stringify(value));
@@ -99,9 +97,7 @@ export class ConfigStore {
 
 	/** Check if a key exists. */
 	has(key: string): boolean {
-		const row = this.#db
-			.prepare("SELECT 1 FROM config WHERE key = ? LIMIT 1")
-			.get(key);
+		const row = this.#db.prepare("SELECT 1 FROM config WHERE key = ? LIMIT 1").get(key);
 		return row !== undefined && row !== null;
 	}
 
@@ -118,22 +114,18 @@ export class ConfigStore {
 	// -----------------------------------------------------------------------
 
 	getMeta(key: string): string | undefined {
-		const row = this.#db
-			.prepare("SELECT value FROM _meta WHERE key = ?")
-			.get(key) as ConfigRow | undefined;
+		const row = this.#db.prepare("SELECT value FROM _meta WHERE key = ?").get(key) as
+			| ConfigRow
+			| undefined;
 		return row?.value;
 	}
 
 	setMeta(key: string, value: string): void {
-		this.#db
-			.prepare("INSERT OR REPLACE INTO _meta (key, value) VALUES (?, ?)")
-			.run(key, value);
+		this.#db.prepare("INSERT OR REPLACE INTO _meta (key, value) VALUES (?, ?)").run(key, value);
 	}
 
 	hasMeta(key: string): boolean {
-		const row = this.#db
-			.prepare("SELECT 1 FROM _meta WHERE key = ? LIMIT 1")
-			.get(key);
+		const row = this.#db.prepare("SELECT 1 FROM _meta WHERE key = ? LIMIT 1").get(key);
 		return row !== undefined && row !== null;
 	}
 

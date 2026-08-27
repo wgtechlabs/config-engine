@@ -3,8 +3,8 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { join } from "node:path";
 import { homedir, platform } from "node:os";
+import { join } from "node:path";
 import { resolveConfigDir, resolveConfigPath } from "../src/platform.js";
 
 describe("resolveConfigDir", () => {

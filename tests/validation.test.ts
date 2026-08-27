@@ -4,8 +4,8 @@
 
 import { describe, expect, test } from "bun:test";
 import { z } from "zod";
-import { createZodValidator, resolveValidator } from "../src/validation.js";
 import type { Validator } from "../src/types.js";
+import { createZodValidator, resolveValidator } from "../src/validation.js";
 
 describe("createZodValidator", () => {
 	const schema = z.object({

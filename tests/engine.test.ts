@@ -4,20 +4,27 @@
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "node:fs";
-import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { z } from "zod";
 import { ConfigEngine, ValidationError } from "../src/index.js";
 
 let tmpDir: string;
 
 beforeEach(() => {
-	tmpDir = join(tmpdir(), `config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+	tmpDir = join(
+		tmpdir(),
+		`config-engine-test-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+	);
 	mkdirSync(tmpDir, { recursive: true });
 });
 
 afterEach(() => {
-	try { rmSync(tmpDir, { recursive: true, force: true }); } catch { /* ignore */ }
+	try {
+		rmSync(tmpDir, { recursive: true, force: true });
+	} catch {
+		/* ignore */
+	}
 });
 
 function opts<T extends Record<string, unknown>>(
@@ -75,9 +82,7 @@ describe("ConfigEngine — basic CRUD", () => {
 	});
 
 	test("clear resets to defaults", async () => {
-		const config = await ConfigEngine.open(
-			opts({ defaults: { theme: "light" } }),
-		);
+		const config = await ConfigEngine.open(opts({ defaults: { theme: "light" } }));
 		config.set("theme", "dark");
 		config.set("extra", "value");
 		config.clear();
@@ -88,9 +93,7 @@ describe("ConfigEngine — basic CRUD", () => {
 	});
 
 	test("reset specific keys to defaults", async () => {
-		const config = await ConfigEngine.open(
-			opts({ defaults: { a: 1, b: 2, c: 3 } }),
-		);
+		const config = await ConfigEngine.open(opts({ defaults: { a: 1, b: 2, c: 3 } }));
 		config.set("a", 100);
 		config.set("b", 200);
 		config.reset("a");
@@ -156,9 +159,7 @@ describe("ConfigEngine — basic CRUD", () => {
 
 describe("ConfigEngine — defaults", () => {
 	test("defaults populate on first open", async () => {
-		const config = await ConfigEngine.open(
-			opts({ defaults: { theme: "dark", fontSize: 14 } }),
-		);
+		const config = await ConfigEngine.open(opts({ defaults: { theme: "dark", fontSize: 14 } }));
 		expect(config.get("theme")).toBe("dark");
 		expect(config.get("fontSize")).toBe(14);
 		config.close();
@@ -166,16 +167,12 @@ describe("ConfigEngine — defaults", () => {
 
 	test("existing values are not overwritten by defaults", async () => {
 		// First open — set a value
-		const config1 = await ConfigEngine.open(
-			opts({ defaults: { theme: "dark" } }),
-		);
+		const config1 = await ConfigEngine.open(opts({ defaults: { theme: "dark" } }));
 		config1.set("theme", "light");
 		config1.close();
 
 		// Second open — defaults should not overwrite
-		const config2 = await ConfigEngine.open(
-			opts({ defaults: { theme: "dark" } }),
-		);
+		const config2 = await ConfigEngine.open(opts({ defaults: { theme: "dark" } }));
 		expect(config2.get("theme")).toBe("light");
 		config2.close();
 	});
@@ -219,9 +216,7 @@ describe("ConfigEngine — dot notation", () => {
 	});
 
 	test("dot notation can be disabled", async () => {
-		const config = await ConfigEngine.open(
-			opts({ accessPropertiesByDotNotation: false }),
-		);
+		const config = await ConfigEngine.open(opts({ accessPropertiesByDotNotation: false }));
 		config.set("a.b.c", "literal");
 		expect(config.get("a.b.c")).toBe("literal");
 		expect(config.has("a")).toBe(false); // "a" should not exist as a key
@@ -333,24 +328,16 @@ describe("ConfigEngine — persistence", () => {
 	});
 
 	test("custom configName creates separate stores", async () => {
-		const config1 = await ConfigEngine.open(
-			opts({ configName: "store-a" }),
-		);
+		const config1 = await ConfigEngine.open(opts({ configName: "store-a" }));
 		config1.set("source", "a");
 		config1.close();
 
-		const config2 = await ConfigEngine.open(
-			opts({ configName: "store-b" }),
-		);
+		const config2 = await ConfigEngine.open(opts({ configName: "store-b" }));
 		config2.set("source", "b");
 		config2.close();
 
-		const reopen1 = await ConfigEngine.open(
-			opts({ configName: "store-a" }),
-		);
-		const reopen2 = await ConfigEngine.open(
-			opts({ configName: "store-b" }),
-		);
+		const reopen1 = await ConfigEngine.open(opts({ configName: "store-a" }));
+		const reopen2 = await ConfigEngine.open(opts({ configName: "store-b" }));
 
 		expect(reopen1.get("source")).toBe("a");
 		expect(reopen2.get("source")).toBe("b");
