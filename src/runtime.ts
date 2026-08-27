@@ -4,7 +4,10 @@
  * Uses `bun:sqlite` on Bun, `better-sqlite3` on Node.js.
  */
 
+import { createRequire } from "node:module";
 import type { DatabaseAdapter, StatementAdapter } from "./types.js";
+
+const runtimeRequire = createRequire(import.meta.url);
 
 /** Returns `true` when running under Bun. */
 export function isBun(): boolean {
@@ -28,9 +31,10 @@ export function openDatabase(filepath: string): DatabaseAdapter {
 // ---------------------------------------------------------------------------
 
 function openBunDatabase(filepath: string): DatabaseAdapter {
-	// Using dynamic import syntax to avoid static analysis issues on Node
+	// Construct the module specifier at runtime so Node-targeted bundlers
+	// don't preserve a static bun:* import in published CLI artifacts.
 	// biome-ignore lint/suspicious/noExplicitAny: bun:sqlite types vary
-	const { Database } = require("bun:sqlite") as any;
+	const { Database } = runtimeRequire(getBunSqliteSpecifier()) as any;
 	const db = new Database(filepath);
 
 	// Enable WAL for concurrent read performance
@@ -72,8 +76,8 @@ function openNodeDatabase(filepath: string): DatabaseAdapter {
 	// better-sqlite3 is a peer dep — error if missing
 	let BetterSqlite3: typeof import("better-sqlite3");
 	try {
-		// biome-ignore lint/suspicious/noExplicitAny: dynamic require
-		BetterSqlite3 = require("better-sqlite3") as any;
+		// biome-ignore lint/suspicious/noExplicitAny: runtime require for ESM output
+		BetterSqlite3 = runtimeRequire("better-sqlite3") as any;
 	} catch {
 		throw new Error(
 			'config-engine requires "better-sqlite3" as a peer dependency when running on Node.js. ' +
@@ -112,4 +116,9 @@ function openNodeDatabase(filepath: string): DatabaseAdapter {
 			return db.transaction(fn) as () => T;
 		},
 	};
+}
+
+function getBunSqliteSpecifier(): string {
+	// Spells "bun:sqlite" without exposing a static bun:* import to bundlers.
+	return String.fromCharCode(98, 117, 110, 58, 115, 113, 108, 105, 116, 101);
 }
