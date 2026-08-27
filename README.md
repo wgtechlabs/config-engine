@@ -36,6 +36,9 @@ For Node.js, also install the SQLite driver:
 npm install @wgtechlabs/config-engine better-sqlite3
 ```
 
+The Bun SQLite backend is loaded only at runtime on Bun, so Node-targeted
+bundles can safely consume the package without pulling in a static `bun:*` import.
+
 ## Quick Start
 
 ```typescript
