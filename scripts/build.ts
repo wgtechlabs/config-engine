@@ -26,7 +26,6 @@ const result = await Bun.build({
 	splitting: true,
 	sourcemap: "external",
 	external: [
-		"bun:sqlite",
 		"better-sqlite3",
 		"@wgtechlabs/secrets-engine",
 		"zod",

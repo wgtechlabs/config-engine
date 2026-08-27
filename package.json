@@ -1,7 +1,7 @@
 {
   "name": "@wgtechlabs/config-engine",
   "version": "0.1.0",
-  "description": "Configs should be easy. Fast, Bun-first configuration SDK for AI agent frameworks, CLI apps, and applications.",
+  "description": "Configs should be easy. Node.js configuration SDK with SQLite-backed storage for AI agent frameworks, CLI apps, and applications.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -37,8 +37,8 @@
     "settings",
     "preferences",
     "sqlite",
-    "bun",
-    "fast",
+    "node",
+    "nodejs",
     "typed",
     "zod",
     "ai",
@@ -57,14 +57,14 @@
   },
   "homepage": "https://github.com/wgtechlabs/config-engine#readme",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.0.0"
   },
   "dependencies": {
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/bun": "^1.2.4",
+    "@types/better-sqlite3": "^9.6.0",
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
@@ -72,9 +72,6 @@
     "@wgtechlabs/secrets-engine": ">=1.0.0"
   },
   "peerDependenciesMeta": {
-    "better-sqlite3": {
-      "optional": true
-    },
     "@wgtechlabs/secrets-engine": {
       "optional": true
     }

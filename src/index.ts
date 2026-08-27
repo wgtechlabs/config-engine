@@ -1,6 +1,7 @@
 /**
  * @module config-engine
- * Fast, Bun-first configuration engine with SQLite-backed storage.
+ * Node.js configuration engine with SQLite-backed storage.
+ * Bun is used as the build and test toolchain; Node.js is the target runtime.
  *
  * @example
  * ```ts
